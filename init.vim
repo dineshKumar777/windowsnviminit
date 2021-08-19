@@ -1,3 +1,7 @@
+" vim:foldmethod=marker:foldlevel=0
+
+" Options {{{
+
 """"""""""""""""""""""""""""""""""""""""""""""""
 " 	DEFAULT SETTINGS FOR ME
 """"""""""""""""""""""""""""""""""""""""""""""""
@@ -6,7 +10,7 @@ set number
 set mouse=a
 set hidden
 syntax on
-set lazyredraw
+" set lazyredraw
 set updatetime=250
 set scrolloff=5
 set history=100
@@ -26,7 +30,7 @@ set autoindent
 
 " Backup
 set nobackup
-set writebackup
+
 set noswapfile
 set noundofile
 
@@ -52,13 +56,22 @@ if has ('autocmd') " Remain compatible with earlier versions
 	augroup END
 endif " has autocmd
 
+" }}} Options
+
 let mapleader=" "
 nnoremap <leader>s <cmd>write<CR>
 nnoremap <leader>q <cmd>quit<CR>
-nnoremap <silent> <leader>ev :edit $MYVIMRC<CR>
+nnoremap <silent> <leader>ev :tabnew $MYVIMRC<CR>
 nnoremap <leader><leader> <cmd>:b#<CR>
 nnoremap <leader>x <cmd>:qa!<CR>
 
+" Mapping to move lines
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
 nnoremap ; :
 vnoremap ; :
 
@@ -67,16 +80,24 @@ nmap <up> <C-w><up>
 nmap <down> <C-w><down>
 nmap <left> <C-w><left>
 nmap <right> <C-w><right>
-""""""""""""""""""""""""""""""""""""""""""""""""""""
-set guifont=Hack:h14
-" set guifont=Jetbrains\ Mono:h12
 
+" http://vimcasts.org/episodes/neovim-terminal-mappings/
+tnoremap <Esc> <C-\><C-n>
+
+" https://superuser.com/a/271024
+set formatoptions-=cro " Disable autoinsert of comments on nextline
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+" set guifont=Iosevka\ Term:h11
+set guifont=Envy\ Code\ R\ for\ Powerline:h12
+" set guifont=hack:h12
 
 " Paste non-linewise text above or below current cursor,
 " see https://stackoverflow.com/a/1346777/6064933
 nnoremap <leader>p m`o<ESC>p``
 nnoremap <leader>P m`O<ESC>p``
 
+
+" Autocommands {{{
 """"""""""""""""""""""""""""""""""""""""""""""""
 " 	UTILTIES AUTOCOMMANDS
 """"""""""""""""""""""""""""""""""""""""""""""""
@@ -117,7 +138,21 @@ fun! HasColorscheme(name) abort
 	return !empty(globpath(&runtimepath, l:pat))
 endfun
 
+" https://dmerej.info/blog/post/vim-cwd-and-neovim/
+fun! OnTabEnter(path)
+	if isdirectory(a:path)
+		let dirname = a:path
+	else
+		let dirname = fnamemodify(a:path, ":h")
+	endif
+	execute "tcd ". dirname
+endfunction()
+
+autocmd TabNewEntered * call OnTabEnter(expand("<amatch>"))
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""
+" }}} Autocommands
+
 """"""""""""""""""""""""""""""""""""""""""""""""
 " 	PLUGINS
 """"""""""""""""""""""""""""""""""""""""""""""""
@@ -134,6 +169,12 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'jghauser/mkdir.nvim'
+Plug 'akinsho/nvim-toggleterm.lua'
+Plug 'rhysd/clever-f.vim'
+Plug 'phaazon/hop.nvim'
+Plug 'abecodes/tabout.nvim'
+Plug 'romainl/vim-cool' " turn off hlsearch when done
+Plug 'norcalli/snippets.nvim'
 call plug#end()
 
 
@@ -159,6 +200,11 @@ else
 	colorscheme default
 endif
 
+"Clever-f config
+let g:clever_f_across_no_line=1
+let g:clever_f_smart_case=1
+let g:clever_f_fix_key_direction=1
+
 " Default mappings with plugins
 " maximizer => f3
 " kommentry => gcc
@@ -171,16 +217,18 @@ require('treesitter')
 require('completion')
 require('autopairs')
 require('telescope')
+require('_hop')
+require('_tabout')
+require('_toggleterm')
 require('mkdir') -- this is for plugin load
 EOF
 
 
-" Include these into completion.lua config instead of init.vim
-inoremap <silent><expr> <C-Space> compe#complete()
-" inoremap <silent><expr> <CR>      compe#confirm('<CR>') "remapped in
-" completion
-inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+" " Include these into completion.lua config instead of init.vim
+" inoremap <silent><expr> <C-Space> compe#complete()
+" " completion
+" inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+" inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+" inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 
-" Snippet configuration is pending
+" "Copy linux neovim config here

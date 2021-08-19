@@ -2,7 +2,7 @@ require('nvim-autopairs').setup({
 	disable_filetype = { "TelescopePrompt", "vim" },
 })
 
--- enter mapping for nvim-compe plugin
+--[[ -- enter mapping for nvim-compe plugin
 require("nvim-autopairs.completion.compe").setup({
   map_cr = true, --  map <CR> on insert mode
   map_complete = true -- it will auto insert `(` after select function or method item
@@ -25,4 +25,4 @@ MUtils.completion_confirm=function()
 end
 
 
-remap('i' , '<CR>','v:lua.MUtils.completion_confirm()', {expr = true , noremap = true})
+remap('i' , '<CR>','v:lua.MUtils.completion_confirm()', {expr = true , noremap = true}) ]]
