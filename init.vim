@@ -87,9 +87,12 @@ tnoremap <Esc> <C-\><C-n>
 " https://superuser.com/a/271024
 set formatoptions-=cro " Disable autoinsert of comments on nextline
 """"""""""""""""""""""""""""""""""""""""""""""""""""
-" set guifont=Iosevka\ Term:h11
-set guifont=Envy\ Code\ R\ for\ Powerline:h12
-" set guifont=hack:h12
+" set guifont=Hack\ NF:h10
+" set guifont=Sudo:h12
+" set guifont=Envy\ Code\ R\ for\ Powerline:h10
+set guifont=Consolas:h10
+" set guifont=Fira\ Code:h10
+" set guifont=FiraCode\ NF:h9
 
 " Paste non-linewise text above or below current cursor,
 " see https://stackoverflow.com/a/1346777/6064933
@@ -158,23 +161,26 @@ autocmd TabNewEntered * call OnTabEnter(expand("<amatch>"))
 """"""""""""""""""""""""""""""""""""""""""""""""
 
 call plug#begin("~/.vim/plugged")
-Plug 'lifepillar/vim-gruvbox8'
-Plug 'b3nj5m1n/kommentary'
-Plug 'szw/vim-maximizer'
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-compe'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'windwp/nvim-autopairs'
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'jghauser/mkdir.nvim'
-Plug 'akinsho/nvim-toggleterm.lua'
-Plug 'rhysd/clever-f.vim'
-Plug 'phaazon/hop.nvim'
 Plug 'abecodes/tabout.nvim'
-Plug 'romainl/vim-cool' " turn off hlsearch when done
+Plug 'akinsho/nvim-toggleterm.lua'
+Plug 'b3nj5m1n/kommentary'
+Plug 'beauwilliams/focus.nvim'
+Plug 'hrsh7th/nvim-compe'
+Plug 'jghauser/mkdir.nvim'
+Plug 'lifepillar/vim-gruvbox8'
+Plug 'neovim/nvim-lspconfig'
 Plug 'norcalli/snippets.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/playground'
+Plug 'phaazon/hop.nvim'
+Plug 'rhysd/clever-f.vim'
+Plug 'romainl/vim-cool' " turn off hlsearch when done
+Plug 'szw/vim-maximizer'
+Plug 'windwp/nvim-autopairs'
+Plug 'kyazdani42/nvim-tree.lua'
 call plug#end()
 
 
@@ -185,6 +191,7 @@ call Cabbrev('pud', 'PlugUpdate')
 call Cabbrev('pug', 'PlugUpgrade')
 call Cabbrev('ps', 'PlugStatus')
 call Cabbrev('pc', 'PlugClean')
+
 
 " Gruvbox settings
 if HasColorscheme('gruvbox8')
@@ -221,14 +228,5 @@ require('_hop')
 require('_tabout')
 require('_toggleterm')
 require('mkdir') -- this is for plugin load
+require('focus').setup()
 EOF
-
-
-" " Include these into completion.lua config instead of init.vim
-" inoremap <silent><expr> <C-Space> compe#complete()
-" " completion
-" inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-" inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-" inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
-
-" "Copy linux neovim config here

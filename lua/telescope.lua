@@ -6,8 +6,8 @@ M.project_files = function()
         'git', 'rev-parse', '--is-inside-work-tree'
     })
     local gopts = {}
-    gopts.prompt_title = ' Git Files'
-    gopts.prompt_prefix = '  '
+    gopts.prompt_title = '> Git Files'
+    gopts.prompt_prefix = ' >> '
     if ret == 0 then
         require'telescope.builtin'.git_files(gopts)
     else
