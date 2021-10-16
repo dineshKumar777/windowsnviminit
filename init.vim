@@ -90,7 +90,7 @@ set formatoptions-=cro " Disable autoinsert of comments on nextline
 " set guifont=Hack\ NF:h10
 " set guifont=Sudo:h12
 " set guifont=Envy\ Code\ R\ for\ Powerline:h10
-set guifont=Consolas:h10
+" set guifont=Consolas:h10
 " set guifont=Fira\ Code:h10
 " set guifont=FiraCode\ NF:h9
 
@@ -165,14 +165,20 @@ Plug 'abecodes/tabout.nvim'
 Plug 'akinsho/nvim-toggleterm.lua'
 Plug 'b3nj5m1n/kommentary'
 Plug 'beauwilliams/focus.nvim'
-Plug 'hrsh7th/nvim-compe'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'jghauser/mkdir.nvim'
+Plug 'kyazdani42/nvim-tree.lua'
 Plug 'lifepillar/vim-gruvbox8'
 Plug 'neovim/nvim-lspconfig'
-Plug 'norcalli/snippets.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/playground'
 Plug 'phaazon/hop.nvim'
@@ -180,7 +186,12 @@ Plug 'rhysd/clever-f.vim'
 Plug 'romainl/vim-cool' " turn off hlsearch when done
 Plug 'szw/vim-maximizer'
 Plug 'windwp/nvim-autopairs'
-Plug 'kyazdani42/nvim-tree.lua'
+Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'windwp/nvim-ts-autotag'
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'famiu/feline.nvim'
+Plug 'rafamadriz/friendly-snippets'
 call plug#end()
 
 
@@ -200,7 +211,7 @@ if HasColorscheme('gruvbox8')
 	let g:gruvbox_italics=1
 	let g:gruvbox_italicize_strings=1
 	let g:gruvbox_filetype_hi_groups = 0
-	let g:gruvbox_plugin_hi_groups = 0
+	let g:gruvbox_plugin_hi_groups = 1
 	set background=dark
 	colorscheme gruvbox8_soft
 else
@@ -212,6 +223,9 @@ let g:clever_f_across_no_line=1
 let g:clever_f_smart_case=1
 let g:clever_f_fix_key_direction=1
 
+
+let g:cursorhold_updatetime=100
+
 " Default mappings with plugins
 " maximizer => f3
 " kommentry => gcc
@@ -219,14 +233,29 @@ let g:clever_f_fix_key_direction=1
 
 lua << EOF
 require('neovide')
+require('_feline')
 require('lsp')
 require('treesitter')
-require('completion')
+require('_nvimcmp')
 require('autopairs')
-require('telescope')
+require('_telescope')
 require('_hop')
 require('_tabout')
 require('_toggleterm')
 require('mkdir') -- this is for plugin load
 require('focus').setup()
+require('gitsigns').setup()
+require('_nvimtree')
 EOF
+
+
+" SNIPPET configuration
+" Expand
+imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+
+" Expand or jump
+imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+
+autocmd BufWritePre *.cs,*.js,*.ts,*.tsx lua vim.lsp.buf.formatting_sync(nil,100)

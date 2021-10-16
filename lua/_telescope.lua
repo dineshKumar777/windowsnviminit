@@ -1,3 +1,11 @@
+require('telescope').setup{
+	defaults = {
+		file_ignore_patterns = {"node_modules"}
+	}
+};
+require('telescope').load_extension('fzf')
+
+
 local utils = require('telescope.utils')
 local M = {}
 
@@ -17,7 +25,8 @@ end
 
 vim.api.nvim_set_keymap( "n", "<leader>;", ":Telescope oldfiles <CR>", {noremap = true, silent = true})
 vim.api.nvim_set_keymap( "n", "<leader>b", ":Telescope buffers <CR>", {noremap = true, silent = true})
-vim.api.nvim_set_keymap( "n", "<leader>f", ":lua require(\'telescope\').project_files()<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap( "n", "<leader>g", ":Telescope live_grep <CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap( "n", "<leader>f", ":lua require(\'_telescope\').project_files()<CR>", {noremap = true, silent = true})
 vim.api.nvim_set_keymap( "n", "<leader>/", ":Telescope current_buffer_fuzzy_find <CR>", {noremap = true, silent = true})
 
 return M
