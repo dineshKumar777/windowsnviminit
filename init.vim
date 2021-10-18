@@ -12,7 +12,7 @@ set hidden
 syntax on
 " set lazyredraw
 set updatetime=250
-set scrolloff=5
+set scrolloff=7
 set history=100
 set nowrap
 
@@ -161,10 +161,12 @@ autocmd TabNewEntered * call OnTabEnter(expand("<amatch>"))
 """"""""""""""""""""""""""""""""""""""""""""""""
 
 call plug#begin("~/.vim/plugged")
+" Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 Plug 'abecodes/tabout.nvim'
 Plug 'akinsho/nvim-toggleterm.lua'
-Plug 'b3nj5m1n/kommentary'
 Plug 'beauwilliams/focus.nvim'
+Plug 'famiu/feline.nvim'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-vsnip'
@@ -173,25 +175,25 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'jghauser/mkdir.nvim'
 Plug 'kyazdani42/nvim-tree.lua'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'lewis6991/gitsigns.nvim'
 Plug 'lifepillar/vim-gruvbox8'
 Plug 'neovim/nvim-lspconfig'
+Plug 'numToStr/Comment.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/playground'
 Plug 'phaazon/hop.nvim'
+Plug 'rafamadriz/friendly-snippets'
 Plug 'rhysd/clever-f.vim'
 Plug 'romainl/vim-cool' " turn off hlsearch when done
+Plug 'shadmansaleh/lualine.nvim'
 Plug 'szw/vim-maximizer'
 Plug 'windwp/nvim-autopairs'
-Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'windwp/nvim-ts-autotag'
-Plug 'lewis6991/gitsigns.nvim'
-Plug 'kyazdani42/nvim-web-devicons'
-Plug 'famiu/feline.nvim'
-Plug 'rafamadriz/friendly-snippets'
 call plug#end()
 
 
@@ -224,16 +226,16 @@ let g:clever_f_smart_case=1
 let g:clever_f_fix_key_direction=1
 
 
-let g:cursorhold_updatetime=100
+" let g:cursorhold_updatetime=100
 
 " Default mappings with plugins
 " maximizer => f3
-" kommentry => gcc
+" comment => gcc
 
 
 lua << EOF
 require('neovide')
-require('_feline')
+require('_lualine')
 require('lsp')
 require('treesitter')
 require('_nvimcmp')
@@ -246,6 +248,7 @@ require('mkdir') -- this is for plugin load
 require('focus').setup()
 require('gitsigns').setup()
 require('_nvimtree')
+require('_comment')
 EOF
 
 
